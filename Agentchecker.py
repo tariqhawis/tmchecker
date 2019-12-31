@@ -6,8 +6,8 @@ import subprocess
 
 timeout = 1 # Since it's an internal network, 1 sec will be enough 
 
-ip_list = sys.argv[1] # path to the file of ip/host list
-port = 1234 # change this to the port required i.e the port that agent client lisenting on
+HOST_LIST = sys.argv[1] # path to the file containing the list og hosts or ip addresses of the agents
+PORT = sys.argv[2] # the port that the agents are listening on.
 
 class bcolors:
     HEADER = '\033[95m'
@@ -19,11 +19,11 @@ class bcolors:
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
 
-def isOpen(ip,port):
+def isOpen(host,port):
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM). # AF_INET for IPv4, SOCK_STREAM for TCP
     s.settimeout(timeout). 
     try:
-        s.connect((ip, int(port))). # try to eatablish a connection with ip/port combination.
+        s.connect((host, int(port))). # try to eatablish a connection with ip/port combination.
         s.shutdown(socket.SHUT_RDWR)  # No exception raised so far, it's safe now to shutdown the connection
         return True
     except:
@@ -46,15 +46,15 @@ def pingable(host):
        return False
 
 
-with open(ip_list,'r') as f:
+with open(HOST_LIST,'r') as f:
     print (f"{bcolors.BOLD} Starting Server/Agent connectivity health check ...")
-    for ip in f:
-        ip = ip.strip()
-        if not ip:
+    for HOST in f:
+        HOST = HOST.strip()
+        if not HOST:
             break
-        if not pingable(ip): # check whether the host is online with ping, supposing ICMP is opened through network firewall.
-            print (f"{bcolors.WARNING}" + ip + " ...Ureachable")
-        elif isOpen(ip,port): # check if we can connect with the host on the specified port
-            print (f"{bcolors.OKGREEN}" + ip + " ...Sucess")
+        if not pingable(HOST): # check whether the host is online with ping, supposing ICMP is opened through network firewall.
+            print (f"{bcolors.WARNING}" + HOST + " ...Ureachable")
+        elif isOpen(HOST,PORT): # check if we can connect with the host on the specified port
+            print (f"{bcolors.OKGREEN}" + HOST + " ...Sucess")
         else:
-            print (f"{bcolors.FAIL}" + ip + " ... Failed")
+            print (f"{bcolors.FAIL}" + HOST + " ... Failed")
