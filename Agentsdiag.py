@@ -1,4 +1,13 @@
 #!/usr/bin/env python3
+#
+# A simple python script to check the connection status of remote agents.
+#
+# Usage:
+# Python3 agentsdiagnostic.py path/to/host_list port
+#
+# Example:
+# Python3 agentsdiag.py Agents_list 1234
+
 
 import sys
 import socket
