@@ -1,11 +1,11 @@
-# agentchecker
+# Remote Agents Diagnostic
 
 A simple python script to check the connection status of remote agents.
 
 Usage:
 
-Python3 agentchecker.py path/to/host_list port
+Python3 agentsdiagnostic.py path/to/host_list port
 
 Example:
 
-Python3 agentchecker.py host_list 1234
+Python3 agentsdiagnostic.py host_list 1234
