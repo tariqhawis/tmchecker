@@ -20,10 +20,10 @@ class bcolors:
     UNDERLINE = '\033[4m'
 
 def isOpen(host,port):
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM). # AF_INET for IPv4, SOCK_STREAM for TCP
-    s.settimeout(timeout). 
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # AF_INET for IPv4, SOCK_STREAM for TCP
+    s.settimeout(timeout)
     try:
-        s.connect((host, int(port))). # try to eatablish a connection with ip/port combination.
+        s.connect((host, int(port))) # try to eatablish a connection with ip/port combination.
         s.shutdown(socket.SHUT_RDWR)  # No exception raised so far, it's safe now to shutdown the connection
         return True
     except:
@@ -34,7 +34,7 @@ def isOpen(host,port):
 
 def pingable(host):    
     ping = subprocess.Popen(
-        ["ping", "-c", timeout, "-W", timeout, host],
+        ["ping", "-c", str(timeout), "-W", str(timeout), host],
         stdout = subprocess.PIPE,
         stderr = subprocess.PIPE
     )
@@ -52,9 +52,10 @@ with open(HOST_LIST,'r') as f:
         HOST = HOST.strip()
         if not HOST:
             break
-        if not pingable(HOST): # check whether the host is online with ping, supposing ICMP is opened through network firewall.
+        elif not pingable(HOST): # check whether the host is online with ping, supposing ICMP is opened through network firewall.
             print (f"{bcolors.WARNING}" + HOST + " ...Ureachable")
-        elif isOpen(HOST,PORT): # check if we can connect with the host on the specified port
-            print (f"{bcolors.OKGREEN}" + HOST + " ...Sucess")
         else:
-            print (f"{bcolors.FAIL}" + HOST + " ... Failed")
+            if isOpen(HOST,PORT): # check if we can connect with the host on the specified port
+                print (f"{bcolors.OKGREEN}" + HOST + " ...Sucess")
+            else:
+                print (f"{bcolors.FAIL}" + HOST + " ...Failed")
