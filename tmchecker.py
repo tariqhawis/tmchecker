@@ -51,7 +51,7 @@ def create_jwt_token(appication_id, api_key, http_method, raw_url, headers, requ
     token = jwt.encode(payload, api_key, algorithm=algorithm).decode('utf-8')
     return token
 
-# Use this region to setup the call info of the TMCM server (server url, application id, api key)
+# Setup the call info of the TMCM server (server url, application id, api key)
 use_url_base = 'https://IP:443' # Trend Micro Control Manager/Apex Central server address
 use_application_id = 'xxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
 use_api_key = 'xxxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxxx' # API key of Trend Micro CM/AC Server
